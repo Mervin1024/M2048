@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE3C36761BB11F050011835F /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE3C36751BB11F050011835F /* GameViewController.m */; };
+		EEED460F1BB0EDD600909CDD /* NumberItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EEED460E1BB0EDD600909CDD /* NumberItem.m */; };
+		EEED46151BB10ADC00909CDD /* BoundaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEED46141BB10ADC00909CDD /* BoundaryView.m */; };
 		EEF4E1151BB006DD0049D6C9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EEF4E1141BB006DD0049D6C9 /* main.m */; };
 		EEF4E1181BB006DD0049D6C9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EEF4E1171BB006DD0049D6C9 /* AppDelegate.m */; };
 		EEF4E11B1BB006DD0049D6C9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EEF4E11A1BB006DD0049D6C9 /* ViewController.m */; };
@@ -27,6 +30,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EE3C36741BB11F050011835F /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
+		EE3C36751BB11F050011835F /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
+		EEED460D1BB0EDD600909CDD /* NumberItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberItem.h; sourceTree = "<group>"; };
+		EEED460E1BB0EDD600909CDD /* NumberItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberItem.m; sourceTree = "<group>"; };
+		EEED46131BB10ADC00909CDD /* BoundaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoundaryView.h; sourceTree = "<group>"; };
+		EEED46141BB10ADC00909CDD /* BoundaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoundaryView.m; sourceTree = "<group>"; };
 		EEF4E10F1BB006DD0049D6C9 /* M2048.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = M2048.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEF4E1131BB006DD0049D6C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EEF4E1141BB006DD0049D6C9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -89,6 +98,12 @@
 				EEF4E11F1BB006DD0049D6C9 /* Images.xcassets */,
 				EEF4E1211BB006DD0049D6C9 /* LaunchScreen.xib */,
 				EEF4E1121BB006DD0049D6C9 /* Supporting Files */,
+				EEED460D1BB0EDD600909CDD /* NumberItem.h */,
+				EEED460E1BB0EDD600909CDD /* NumberItem.m */,
+				EEED46131BB10ADC00909CDD /* BoundaryView.h */,
+				EEED46141BB10ADC00909CDD /* BoundaryView.m */,
+				EE3C36741BB11F050011835F /* GameViewController.h */,
+				EE3C36751BB11F050011835F /* GameViewController.m */,
 			);
 			path = M2048;
 			sourceTree = "<group>";
@@ -219,9 +234,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEED46151BB10ADC00909CDD /* BoundaryView.m in Sources */,
 				EEF4E11B1BB006DD0049D6C9 /* ViewController.m in Sources */,
 				EEF4E1181BB006DD0049D6C9 /* AppDelegate.m in Sources */,
 				EEF4E1151BB006DD0049D6C9 /* main.m in Sources */,
+				EE3C36761BB11F050011835F /* GameViewController.m in Sources */,
+				EEED460F1BB0EDD600909CDD /* NumberItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,6 +434,7 @@
 				EEF4E1341BB006DD0049D6C9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EEF4E1351BB006DD0049D6C9 /* Build configuration list for PBXNativeTarget "M2048Tests" */ = {
 			isa = XCConfigurationList;
@@ -424,6 +443,7 @@
 				EEF4E1371BB006DD0049D6C9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

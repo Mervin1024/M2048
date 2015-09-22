@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F7D753EC-9860-4C73-AC40-7E85B5E22543</string>
+	<key>IDESourceControlProjectName</key>
+	<string>M2048</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>52D1591ECB6558F932B97FA92CE90A98D8AA3F04</key>
+		<string>github.com:Mervin1024/M2048.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>M2048.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>52D1591ECB6558F932B97FA92CE90A98D8AA3F04</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:Mervin1024/M2048.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>52D1591ECB6558F932B97FA92CE90A98D8AA3F04</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>52D1591ECB6558F932B97FA92CE90A98D8AA3F04</string>
+			<key>IDESourceControlWCCName</key>
+			<string>M2048</string>
+		</dict>
+	</array>
+</dict>
+</plist>

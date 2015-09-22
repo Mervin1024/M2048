@@ -9,10 +9,11 @@
 #import "GameViewController.h"
 #import "BoundaryView.h"
 #import "NumberItem.h"
+#import "NSArray+MEROperation.h"
 
 @interface GameViewController () {
     BoundaryView *boundaryView;
-    NSMutableArray *items;
+    NSMutableDictionary *items;
     NSMutableArray *positionsArray;
     BOOL moveEnable;
     CGPoint touchPoint;
@@ -25,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     moveEnable = NO;
-    items = [NSMutableArray arrayWithCapacity:16];
+    items = [NSMutableDictionary dictionaryWithCapacity:16];
     positionsArray = [NSMutableArray arrayWithArray:@[@0,@0,@0,@0,  @0,@0,@0,@0,  @0,@0,@0,@0,  @0,@0,@0,@0 ]];
     CGFloat width = ([UIScreen mainScreen].bounds.size.width-52);
     [self.view setFrame:CGRectMake(26, [UIScreen mainScreen].bounds.size.height-100-width, width, width)];
@@ -34,16 +35,7 @@
     
     [self addNewNumberItemWithAnimation:NO];
     [self addNewNumberItemWithAnimation:NO];
-//    [self performSelector:@selector(move) withObject:nil afterDelay:3];
 }
-
-//- (void)move{
-//    
-//    NumberItem *item = items[0];
-//    NSLog(@"move before:%ld,%ld",item.position.row,item.position.column);
-//    [item setPosition:(Position){0,item.position.column}];
-//    NSLog(@"move after:%ld,%ld",item.position.row,item.position.column);
-//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -51,11 +43,26 @@
 }
 
 - (void)addNewNumberItemWithAnimation:(BOOL)animation{
+    if ([self arrayOfSurplusPositions].count == 0) {
+        NSLog(@"full");
+        return;
+    }
     Position p = [self positionRandom];
-    positionsArray[p.row*4+p.column] = @1;
+    NSInteger index = p.row*4+p.column;
+    positionsArray[index] = @1;
     NSInteger power = (arc4random() % 2)+1;
     NumberItem *item = [[NumberItem alloc] initWithBoundaryView:boundaryView position:p power:power animation:animation];
-    [items addObject:item];
+    [items setObject:item forKey:[NSString stringWithFormat:@"%ld",index]];
+}
+
+- (NSArray *)arrayOfSurplusPositions{
+    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:16];
+    for (int i = 0; i < positionsArray.count; i++) {
+        if ([positionsArray[i] integerValue] == 0) {
+            [arr addObject:@(i)];
+        }
+    }
+    return arr;
 }
 
 - (id)randomFromArray:(NSArray *)arr{
@@ -64,18 +71,44 @@
 }
 
 - (Position)positionRandom{
-    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:16];
-    for (int i = 0; i < positionsArray.count; i++) {
-        if ([positionsArray[i] integerValue] == 0) {
-            [arr addObject:@(i)];
-        }
-    }
+    NSArray *arr = [self arrayOfSurplusPositions];
     NSInteger a = [[self randomFromArray:arr] integerValue];
     Position p;
     p.row = a/4;
     p.column = a%4;
     return p;
 }
+#pragma mark - move and combine
+
+- (void)moveWithMovingDirection:(MovingDirection)movingDirection{
+    switch (movingDirection) {
+        case MovingDirectionUp:
+            for (int i = 0; i < 4; i++) {
+                NSArray *columns = @[positionsArray[0+i],positionsArray[4+i],positionsArray[8+i],positionsArray[12+i]];
+                NSInteger moveSpace = 0;
+                for (int j = 0; j < 4; j++) {
+                    if ([columns[j] integerValue] == 1) {
+                        //   蛋疼
+                    }else{
+                        moveSpace++;
+                    }
+                }
+            }
+            
+            break;
+        case MovingDirectionDown:
+            
+            break;
+        case MovingDirectionLeft:
+            
+            break;
+        case MovingDirectionRight:
+            
+            break;
+    }
+    
+}
+
 #pragma mark - touch
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     [super touchesBegan:touches withEvent:event];
@@ -94,12 +127,29 @@
     CGPoint point = [touch locationInView:self.view];
     CGFloat x = fabs(point.x - touchPoint.x);
     CGFloat y = fabs(point.y - touchPoint.y);
-    if (x > 30) {
-        NSLog(@"横移");
+    MovingDirection movingDirection;
+    if (x > 30 || y > 30) {
+        if (x > 30) {
+            if (point.x > touchPoint.x) {
+                NSLog(@"右移");
+                movingDirection = MovingDirectionRight;
+            }else{
+                NSLog(@"左移");
+                movingDirection = MovingDirectionLeft;
+            }
+        }else{
+            if (point.y > touchPoint.y) {
+                NSLog(@"下移");
+                movingDirection = MovingDirectionDown;
+            }else{
+                NSLog(@"上移");
+                movingDirection = MovingDirectionUp;
+            }
+        }
+        
         moveEnable = NO;
-    }else if (y > 30){
-        NSLog(@"竖移");
-        moveEnable = NO;
+        [self moveWithMovingDirection:movingDirection];
+        [self addNewNumberItemWithAnimation:YES];
     }
 }
 

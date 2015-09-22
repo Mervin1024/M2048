@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EE3C36761BB11F050011835F /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE3C36751BB11F050011835F /* GameViewController.m */; };
+		EE3C36791BB15ECF0011835F /* NSArray+MEROperation.m in Sources */ = {isa = PBXBuildFile; fileRef = EE3C36781BB15ECF0011835F /* NSArray+MEROperation.m */; };
 		EEED460F1BB0EDD600909CDD /* NumberItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EEED460E1BB0EDD600909CDD /* NumberItem.m */; };
 		EEED46151BB10ADC00909CDD /* BoundaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEED46141BB10ADC00909CDD /* BoundaryView.m */; };
 		EEF4E1151BB006DD0049D6C9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EEF4E1141BB006DD0049D6C9 /* main.m */; };
@@ -32,6 +33,8 @@
 /* Begin PBXFileReference section */
 		EE3C36741BB11F050011835F /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
 		EE3C36751BB11F050011835F /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
+		EE3C36771BB15ECF0011835F /* NSArray+MEROperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MEROperation.h"; sourceTree = "<group>"; };
+		EE3C36781BB15ECF0011835F /* NSArray+MEROperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+MEROperation.m"; sourceTree = "<group>"; };
 		EEED460D1BB0EDD600909CDD /* NumberItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberItem.h; sourceTree = "<group>"; };
 		EEED460E1BB0EDD600909CDD /* NumberItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberItem.m; sourceTree = "<group>"; };
 		EEED46131BB10ADC00909CDD /* BoundaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoundaryView.h; sourceTree = "<group>"; };
@@ -104,6 +107,8 @@
 				EEED46141BB10ADC00909CDD /* BoundaryView.m */,
 				EE3C36741BB11F050011835F /* GameViewController.h */,
 				EE3C36751BB11F050011835F /* GameViewController.m */,
+				EE3C36771BB15ECF0011835F /* NSArray+MEROperation.h */,
+				EE3C36781BB15ECF0011835F /* NSArray+MEROperation.m */,
 			);
 			path = M2048;
 			sourceTree = "<group>";
@@ -238,6 +243,7 @@
 				EEF4E11B1BB006DD0049D6C9 /* ViewController.m in Sources */,
 				EEF4E1181BB006DD0049D6C9 /* AppDelegate.m in Sources */,
 				EEF4E1151BB006DD0049D6C9 /* main.m in Sources */,
+				EE3C36791BB15ECF0011835F /* NSArray+MEROperation.m in Sources */,
 				EE3C36761BB11F050011835F /* GameViewController.m in Sources */,
 				EEED460F1BB0EDD600909CDD /* NumberItem.m in Sources */,
 			);

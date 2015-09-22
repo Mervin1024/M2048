@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, MovingDirection) {
+    MovingDirectionUp,
+    MovingDirectionDown,
+    MovingDirectionLeft,
+    MovingDirectionRight
+};
+
 @interface GameViewController : UIViewController
 
 @end

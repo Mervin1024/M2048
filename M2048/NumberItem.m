@@ -69,6 +69,9 @@
 }
 
 - (void)setPosition:(Position)position{
+    if (position.row == _position.row && position.column == _position.column) {
+        return;
+    }
     [UIView animateWithDuration:0.2 animations:^{
         [self setFrame:[boundaryView frameAtRow:position.row column:position.column]];
     }completion:^(BOOL finished){
@@ -80,6 +83,9 @@
 }
 
 - (void)setPosition:(Position)position andPower:(NSInteger)power{
+//    if (position.row == _position.row && position.column == _position.column) {
+//        return;
+//    }
     [UIView animateWithDuration:0.2 animations:^{
         [self setFrame:[boundaryView frameAtRow:position.row column:position.column]];
     }completion:^(BOOL finished){

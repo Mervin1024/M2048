@@ -123,12 +123,14 @@
 //    if (position.row == _position.row && position.column == _position.column) {
 //        return;
 //    }
+    NSInteger p = _power;
+    _power = power;
     self.CombineEnable = YES;
     [UIView animateWithDuration:0.2 animations:^{
         [self setFrame:[boundaryView frameAtRow:position.row column:position.column]];
     }completion:^(BOOL finished){
         if (finished) {
-            if (power != _power) {
+            if (power != p) {
                 [self setPower:power];
                 [self addCombineAnimation];
             }

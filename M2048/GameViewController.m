@@ -72,6 +72,11 @@
 
 - (BOOL)gameEnd{
     BOOL gameEnd = NO;
+    NSArray *arr = [items allKeys];
+    for (NSString *str in arr) {
+        NumberItem *item = [items objectForKey:str];
+        NSLog(@"位置:%@,数值:%f",str,pow(2,item.power));
+    }
     if ([self arrayOfSurplusPositions].count == 0) {
         gameEnd = YES;
         for (int i = 0; i < positionsArray.count; i++) {

@@ -81,6 +81,7 @@
 #pragma mark - move and combine
 
 - (void)moveWithMovingDirection:(MovingDirection)movingDirection{
+    BOOL moved = NO;
     switch (movingDirection) {
         case MovingDirectionUp:{
             for (int i = 0; i < 4; i++) {
@@ -140,6 +141,12 @@
                     }
                     [items setObject:item forKey:[NSString stringWithFormat:@"%d",l*4+i]];
                     positionsArray[l*4+i] = @1;
+                }
+                if ([positionsArray[0+i] integerValue] != [columns[0] integerValue] ||
+                    [positionsArray[4+i] integerValue] != [columns[1] integerValue] ||
+                    [positionsArray[8+i] integerValue] != [columns[2] integerValue] ||
+                    [positionsArray[12+i] integerValue] != [columns[3] integerValue]) {
+                    moved = YES;
                 }
 //                NSLog(@"-------最终:\n%@,\n%@,\n%@,\n%@\n--------",positionsArray[0+i],positionsArray[4+i],positionsArray[8+i],positionsArray[12+i]);
             }
@@ -204,6 +211,12 @@
                     [items setObject:item forKey:[NSString stringWithFormat:@"%d",(3-l)*4+i]];
                     positionsArray[(3-l)*4+i] = @1;
                 }
+                if ([positionsArray[12+i] integerValue] != [columns[0] integerValue] ||
+                    [positionsArray[8+i] integerValue] != [columns[1] integerValue] ||
+                    [positionsArray[4+i] integerValue] != [columns[2] integerValue] ||
+                    [positionsArray[0+i] integerValue] != [columns[3] integerValue]) {
+                    moved = YES;
+                }
 //                NSLog(@"-------最终:\n%@,\n%@,\n%@,\n%@\n--------",positionsArray[0+i],positionsArray[4+i],positionsArray[8+i],positionsArray[12+i]);
             }
             break;
@@ -265,6 +278,12 @@
                     }
                     [items setObject:item forKey:[NSString stringWithFormat:@"%d",i*4+l]];
                     positionsArray[i*4+l] = @1;
+                }
+                if ([positionsArray[i*4+0] integerValue] != [columns[0] integerValue] ||
+                    [positionsArray[i*4+1] integerValue] != [columns[1] integerValue] ||
+                    [positionsArray[i*4+2] integerValue] != [columns[2] integerValue] ||
+                    [positionsArray[i*4+3] integerValue] != [columns[3] integerValue]) {
+                    moved = YES;
                 }
 //                NSLog(@"-------最终:\n%@,\n%@,\n%@,\n%@\n--------",positionsArray[0+i],positionsArray[4+i],positionsArray[8+i],positionsArray[12+i]);
             }
@@ -328,12 +347,20 @@
                     [items setObject:item forKey:[NSString stringWithFormat:@"%d",i*4+(3-l)]];
                     positionsArray[i*4+(3-l)] = @1;
                 }
+                if ([positionsArray[i*4+3] integerValue] != [columns[0] integerValue] ||
+                    [positionsArray[i*4+2] integerValue] != [columns[1] integerValue] ||
+                    [positionsArray[i*4+1] integerValue] != [columns[2] integerValue] ||
+                    [positionsArray[i*4+0] integerValue] != [columns[3] integerValue]) {
+                    moved = YES;
+                }
 //                NSLog(@"-------最终:\n%@,\n%@,\n%@,\n%@\n--------",positionsArray[0+i],positionsArray[4+i],positionsArray[8+i],positionsArray[12+i]);
             }
             break;
         }
     }
-    
+    if (moved) {
+        [self addNewNumberItemWithAnimation:YES];
+    }
 }
 
 #pragma mark - touch
@@ -358,25 +385,24 @@
     if (x > 30 || y > 30) {
         if (x > 30) {
             if (point.x > touchPoint.x) {
-                NSLog(@"右移");
+//                NSLog(@"右移");
                 movingDirection = MovingDirectionRight;
             }else{
-                NSLog(@"左移");
+//                NSLog(@"左移");
                 movingDirection = MovingDirectionLeft;
             }
         }else{
             if (point.y > touchPoint.y) {
-                NSLog(@"下移");
+//                NSLog(@"下移");
                 movingDirection = MovingDirectionDown;
             }else{
-                NSLog(@"上移");
+//                NSLog(@"上移");
                 movingDirection = MovingDirectionUp;
             }
         }
         
         moveEnable = NO;
         [self moveWithMovingDirection:movingDirection];
-        [self addNewNumberItemWithAnimation:YES];
     }
 }
 

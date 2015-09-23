@@ -12,7 +12,12 @@
 @interface ViewController (){
     GameViewController *gameViewController;
 }
-
+@property (weak, nonatomic) IBOutlet UIImageView *stepNumberImage;
+@property (weak, nonatomic) IBOutlet UILabel *stepNumberLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *currentScoreImage;
+@property (weak, nonatomic) IBOutlet UILabel *currentScoreLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *maximumScoreImage;
+@property (weak, nonatomic) IBOutlet UILabel *maximumScoreLabel;
 @end
 
 @implementation ViewController
@@ -22,8 +27,18 @@
     gameViewController = [[GameViewController alloc] init];
     [self addChildViewController:gameViewController];
     [self.view addSubview:gameViewController.view];
-//    [item addCombineAnimation];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    [self.stepNumberImage.layer setMasksToBounds:YES];
+    [self.stepNumberImage.layer setCornerRadius:8.0];
+    [self.currentScoreImage.layer setMasksToBounds:YES];
+    [self.currentScoreImage.layer setCornerRadius:8.0];
+    [self.maximumScoreImage.layer setMasksToBounds:YES];
+    [self.maximumScoreImage.layer setCornerRadius:8.0];
+    
+    NSNumber *num = [[NSUserDefaults standardUserDefaults] objectForKey:@"maximumScore"];
+    if (!num) {
+        self.maximumScoreLabel.text = [NSString stringWithFormat:@"%ld",(long)[num integerValue]];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,9 +48,6 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-//    NumberItem *item = [[NumberItem alloc] initWithFrame:CGRectMake(100, 100, 80, 80) power:2];
-//    [self.view addSubview:item];
-//    [item addAppearAnimation];
 }
 
 @end

@@ -16,6 +16,7 @@
     NSMutableDictionary *items;
     NSMutableArray *positionsArray;
     BOOL moveEnable;
+    BOOL touchEnable;
     CGPoint touchPoint;
 }
 
@@ -26,6 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     moveEnable = NO;
+    touchEnable = YES;
     items = [NSMutableDictionary dictionaryWithCapacity:16];
     positionsArray = [NSMutableArray arrayWithArray:@[@0,@0,@0,@0,  @0,@0,@0,@0,  @0,@0,@0,@0,  @0,@0,@0,@0 ]];
     CGFloat width = ([UIScreen mainScreen].bounds.size.width-52);
@@ -43,16 +45,58 @@
 }
 
 - (void)addNewNumberItemWithAnimation:(BOOL)animation{
-    if ([self arrayOfSurplusPositions].count == 0) {
-        NSLog(@"full");
-        return;
-    }
+//    if ([self arrayOfSurplusPositions].count == 0) {
+//        NSLog(@"full");
+//        return;
+//    }
     Position p = [self positionRandom];
     NSInteger index = p.row*4+p.column;
     positionsArray[index] = @1;
     NSInteger power = (arc4random() % 2)+1;
     NumberItem *item = [[NumberItem alloc] initWithBoundaryView:boundaryView position:p power:power animation:animation];
-    [items setObject:item forKey:[NSString stringWithFormat:@"%ld",index]];
+    [items setObject:item forKey:[NSString stringWithFormat:@"%ld",(long)index]];
+    
+    if ([self gameEnd]) {
+        NSLog(@"游戏结束");
+        touchEnable = NO;
+    }
+}
+
+- (BOOL)gameEnd{
+    BOOL gameEnd = NO;
+    if ([self arrayOfSurplusPositions].count == 0) {
+        gameEnd = YES;
+        for (int i = 0; i < positionsArray.count; i++) {
+            NumberItem *item1 = [items objectForKey:[NSString stringWithFormat:@"%d",i]];
+//            NSLog(@"第%d个number:%ld",i,(long)item1.power);
+            if (i+4 < positionsArray.count) {
+                NumberItem *item2 = [items objectForKey:[NSString stringWithFormat:@"%d",i+4]];
+//                NSLog(@"下面一个:%ld",item2.power);
+                if (item1.power == item2.power) {
+//                    NSLog(@"相同");
+                    gameEnd = NO;
+                }else{
+//                    NSLog(@"不同");
+                }
+            }
+            if (i+1 < positionsArray.count && (i+1)/4 == i/4) {
+                NumberItem *item2 = [items objectForKey:[NSString stringWithFormat:@"%d",i+1]];
+//                NSLog(@"右边一个:%ld",item2.power);
+                if (item1.power == item2.power) {
+//                    NSLog(@"相同");
+                    gameEnd = NO;
+                }else{
+//                    NSLog(@"不同");
+                }
+            }
+        }
+//        if (gameEnd) {
+//            NSLog(@"gameEnd:YES");
+//        }else{
+//            NSLog(@"gameEnd:NO");
+//        }
+    }
+    return gameEnd;
 }
 
 - (NSArray *)arrayOfSurplusPositions{
@@ -366,6 +410,9 @@
 #pragma mark - touch
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     [super touchesBegan:touches withEvent:event];
+    if (!touchEnable) {
+        return;
+    }
     moveEnable = YES;
     UITouch *touch = [touches anyObject];
     CGPoint point = [touch locationInView:self.view];

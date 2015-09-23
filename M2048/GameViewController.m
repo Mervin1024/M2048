@@ -82,29 +82,256 @@
 
 - (void)moveWithMovingDirection:(MovingDirection)movingDirection{
     switch (movingDirection) {
-        case MovingDirectionUp:
+        case MovingDirectionUp:{
             for (int i = 0; i < 4; i++) {
+//                NSLog(@"------------上移----------");
+//                NSLog(@"-----------第%d列---------",i);
                 NSArray *columns = @[positionsArray[0+i],positionsArray[4+i],positionsArray[8+i],positionsArray[12+i]];
-                NSInteger moveSpace = 0;
+//                NSLog(@"初始:%@",columns);
+                NSMutableArray *columnItems = [NSMutableArray arrayWithCapacity:4];
                 for (int j = 0; j < 4; j++) {
-                    if ([columns[j] integerValue] == 1) {
-                        //   蛋疼
-                    }else{
-                        moveSpace++;
+                    NSNumber *number = columns[j];
+                    if ([number integerValue] == 1) {
+//                        NSLog(@"有数字的方格:%d",j*4+i);
+                        NumberItem *item = [items objectForKey:[NSString stringWithFormat:@"%d",j*4+i]];
+                        [items removeObjectForKey:[NSString stringWithFormat:@"%d",j*4+i]];
+                        [columnItems addObject:item];
                     }
                 }
+//                NSLog(@"筛选过后:%lu",(unsigned long)columnItems.count);
+                if (columnItems.count == 0) {
+                    continue;
+                }
+                NSMutableArray *newColumnItems = [NSMutableArray arrayWithCapacity:4];
+                NSInteger pow = 0;
+                for (int k = 0; k < columnItems.count; k++) {
+                    NumberItem *item = columnItems[k];
+                    if (item.power != pow) {
+                        
+                    }else{
+                        NumberItem *ite = columnItems[k-1];
+                        if (ite.CombineEnable) {
+                            item.CombineEnable = NO;
+                            Position p;
+                            p.row = newColumnItems.count-1;
+                            p.column = i;
+                            [ite setPosition:p dealloc:YES];
+                            [newColumnItems removeLastObject];
+                        }
+                    }
+                    [newColumnItems addObject:item];
+                    pow = item.power;
+                }
+//                NSLog(@"合并后:%ld",newColumnItems.count);
+                for (int m = 0; m < 4; m++) {
+                    positionsArray[m*4+i] = @0;
+                    
+                }
+                for (int l = 0; l < newColumnItems.count; l++) {
+                    NumberItem *item = newColumnItems[l];
+                    Position p;
+                    p.row = l;
+                    p.column = i;
+                    if (!item.CombineEnable) {
+                        NSInteger power = item.power+1;
+                        [item setPosition:p andPower:power];
+                    }else{
+                        [item setPosition:p];
+                    }
+                    [items setObject:item forKey:[NSString stringWithFormat:@"%d",l*4+i]];
+                    positionsArray[l*4+i] = @1;
+                }
+//                NSLog(@"-------最终:\n%@,\n%@,\n%@,\n%@\n--------",positionsArray[0+i],positionsArray[4+i],positionsArray[8+i],positionsArray[12+i]);
             }
             
             break;
-        case MovingDirectionDown:
-            
+        }
+        case MovingDirectionDown:{
+            for (int i = 0; i < 4; i++) {
+//                NSLog(@"------------下移----------");
+//                NSLog(@"-----------第%d列---------",i);
+                NSArray *columns = @[positionsArray[12+i],positionsArray[8+i],positionsArray[4+i],positionsArray[0+i]];
+//                NSLog(@"初始:%@",columns);
+                NSMutableArray *columnItems = [NSMutableArray arrayWithCapacity:4];
+                for (int j = 0; j < 4; j++) {
+                    NSNumber *number = columns[j];
+                    if ([number integerValue] == 1) {
+                        //                        NSLog(@"有数字的方格:%d",j*4+i);
+                        NumberItem *item = [items objectForKey:[NSString stringWithFormat:@"%d",(3-j)*4+i]];
+                        [items removeObjectForKey:[NSString stringWithFormat:@"%d",(3-j)*4+i]];
+                        [columnItems addObject:item];
+                    }
+                }
+                if (columnItems.count == 0) {
+                    continue;
+                }
+                NSMutableArray *newColumnItems = [NSMutableArray arrayWithCapacity:4];
+                NSInteger pow = 0;
+                for (int k = 0; k < columnItems.count; k++) {
+                    NumberItem *item = columnItems[k];
+                    if (item.power != pow) {
+                        
+                    }else{
+                        NumberItem *ite = columnItems[k-1];
+                        if (ite.CombineEnable) {
+                            item.CombineEnable = NO;
+                            Position p;
+                            p.row = 3-(newColumnItems.count-1);
+                            p.column = i;
+                            [ite setPosition:p dealloc:YES];
+                            [newColumnItems removeLastObject];
+                        }
+                    }
+                    [newColumnItems addObject:item];
+                    pow = item.power;
+                }
+                //                NSLog(@"合并后:%ld",newColumnItems.count);
+                for (int m = 0; m < 4; m++) {
+                    positionsArray[m*4+i] = @0;
+                    
+                }
+                for (int l = 0; l < newColumnItems.count; l++) {
+                    NumberItem *item = newColumnItems[l];
+                    Position p;
+                    p.row = 3-l;
+                    p.column = i;
+                    if (!item.CombineEnable) {
+                        NSInteger power = item.power+1;
+                        [item setPosition:p andPower:power];
+                    }else{
+                        [item setPosition:p];
+                    }
+                    [items setObject:item forKey:[NSString stringWithFormat:@"%d",(3-l)*4+i]];
+                    positionsArray[(3-l)*4+i] = @1;
+                }
+//                NSLog(@"-------最终:\n%@,\n%@,\n%@,\n%@\n--------",positionsArray[0+i],positionsArray[4+i],positionsArray[8+i],positionsArray[12+i]);
+            }
             break;
-        case MovingDirectionLeft:
-            
+        }
+        case MovingDirectionLeft:{
+            for (int i = 0; i < 4; i++) {
+//                NSLog(@"------------左移----------");
+//                NSLog(@"-----------第%d行---------",i);
+                NSArray *columns = @[positionsArray[i*4+0],positionsArray[i*4+1],positionsArray[i*4+2],positionsArray[i*4+3]];
+//                NSLog(@"初始:%@",columns);
+                NSMutableArray *columnItems = [NSMutableArray arrayWithCapacity:4];
+                for (int j = 0; j < 4; j++) {
+                    NSNumber *number = columns[j];
+                    if ([number integerValue] == 1) {
+//                        NSLog(@"有数字的方格:%d",j*4+i);
+                        NumberItem *item = [items objectForKey:[NSString stringWithFormat:@"%d",i*4+j]];
+                        [items removeObjectForKey:[NSString stringWithFormat:@"%d",i*4+j]];
+                        [columnItems addObject:item];
+                    }
+                }
+                if (columnItems.count == 0) {
+                    continue;
+                }
+                NSMutableArray *newColumnItems = [NSMutableArray arrayWithCapacity:4];
+                NSInteger pow = 0;
+                for (int k = 0; k < columnItems.count; k++) {
+                    NumberItem *item = columnItems[k];
+                    if (item.power != pow) {
+                        
+                    }else{
+                        NumberItem *ite = columnItems[k-1];
+                        if (ite.CombineEnable) {
+                            item.CombineEnable = NO;
+                            Position p;
+                            p.row = i;
+                            p.column = newColumnItems.count-1;
+                            [ite setPosition:p dealloc:YES];
+                            [newColumnItems removeLastObject];
+                        }
+                    }
+                    [newColumnItems addObject:item];
+                    pow = item.power;
+                }
+//                NSLog(@"合并后:%ld",newColumnItems.count);
+                for (int m = 0; m < 4; m++) {
+                    positionsArray[i*4+m] = @0;
+                    
+                }
+                for (int l = 0; l < newColumnItems.count; l++) {
+                    NumberItem *item = newColumnItems[l];
+                    Position p;
+                    p.row = i;
+                    p.column = l;
+                    if (!item.CombineEnable) {
+                        NSInteger power = item.power+1;
+                        [item setPosition:p andPower:power];
+                    }else{
+                        [item setPosition:p];
+                    }
+                    [items setObject:item forKey:[NSString stringWithFormat:@"%d",i*4+l]];
+                    positionsArray[i*4+l] = @1;
+                }
+//                NSLog(@"-------最终:\n%@,\n%@,\n%@,\n%@\n--------",positionsArray[0+i],positionsArray[4+i],positionsArray[8+i],positionsArray[12+i]);
+            }
             break;
-        case MovingDirectionRight:
-            
+        }
+        case MovingDirectionRight:{
+            for (int i = 0; i < 4; i++) {
+//                NSLog(@"------------右移----------");
+//                NSLog(@"-----------第%d行---------",i);
+                NSArray *columns = @[positionsArray[i*4+3],positionsArray[i*4+2],positionsArray[i*4+1],positionsArray[i*4+0]];
+//                NSLog(@"初始:%@",columns);
+                NSMutableArray *columnItems = [NSMutableArray arrayWithCapacity:4];
+                for (int j = 0; j < 4; j++) {
+                    NSNumber *number = columns[j];
+                    if ([number integerValue] == 1) {
+//                        NSLog(@"有数字的方格:%d",j*4+i);
+                        NumberItem *item = [items objectForKey:[NSString stringWithFormat:@"%d",i*4+(3-j)]];
+                        [items removeObjectForKey:[NSString stringWithFormat:@"%d",i*4+(3-j)]];
+                        [columnItems addObject:item];
+                    }
+                }
+                if (columnItems.count == 0) {
+                    continue;
+                }
+                NSMutableArray *newColumnItems = [NSMutableArray arrayWithCapacity:4];
+                NSInteger pow = 0;
+                for (int k = 0; k < columnItems.count; k++) {
+                    NumberItem *item = columnItems[k];
+                    if (item.power != pow) {
+                        
+                    }else{
+                        NumberItem *ite = columnItems[k-1];
+                        if (ite.CombineEnable) {
+                            item.CombineEnable = NO;
+                            Position p;
+                            p.row = i;
+                            p.column = 3-(newColumnItems.count-1);
+                            [ite setPosition:p dealloc:YES];
+                            [newColumnItems removeLastObject];
+                        }
+                    }
+                    [newColumnItems addObject:item];
+                    pow = item.power;
+                }
+//                NSLog(@"合并后:%ld",newColumnItems.count);
+                for (int m = 0; m < 4; m++) {
+                    positionsArray[i*4+m] = @0;
+                    
+                }
+                for (int l = 0; l < newColumnItems.count; l++) {
+                    NumberItem *item = newColumnItems[l];
+                    Position p;
+                    p.row = i;
+                    p.column = 3-l;
+                    if (!item.CombineEnable) {
+                        NSInteger power = item.power+1;
+                        [item setPosition:p andPower:power];
+                    }else{
+                        [item setPosition:p];
+                    }
+                    [items setObject:item forKey:[NSString stringWithFormat:@"%d",i*4+(3-l)]];
+                    positionsArray[i*4+(3-l)] = @1;
+                }
+//                NSLog(@"-------最终:\n%@,\n%@,\n%@,\n%@\n--------",positionsArray[0+i],positionsArray[4+i],positionsArray[8+i],positionsArray[12+i]);
+            }
             break;
+        }
     }
     
 }

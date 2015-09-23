@@ -13,7 +13,8 @@
 
 @property (nonatomic, assign) NSInteger power;
 @property (nonatomic, assign) Position position;
-- (void)setPosition:(Position)position;
+@property (nonatomic, assign) BOOL CombineEnable;
+- (void)setPosition:(Position)position dealloc:(BOOL)dealloc;
 - (void)setPosition:(Position)position andPower:(NSInteger)power;
 
 - (instancetype)initWithBoundaryView:(BoundaryView *)view position:(Position)position power:(NSInteger)power animation:(BOOL)animation;

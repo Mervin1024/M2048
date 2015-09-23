@@ -25,6 +25,7 @@
         boundaryView = view;
         _position = position;
         _power = power;
+        _CombineEnable = YES;
         number = pow(2, power);
         NSString *imageName;
         if (power < 9) {
@@ -50,7 +51,8 @@
         [numLabel setNumberOfLines:1]; // 行数
         [numLabel setBaselineAdjustment:UIBaselineAdjustmentAlignCenters]; // 自适应的方式
         [self addSubview:numLabel];
-        [view addSubview:self];
+//        [view addSubview:self];
+        [view insertSubview:self atIndex:0];
         if (animation) {
 //            self.hidden = YES;
             numLabel.hidden = YES;
@@ -65,7 +67,18 @@
 - (void)setPower:(NSInteger)power{
     number = pow(2, power);
     [numLabel setText:[NSString stringWithFormat:@"%ld",number]];
+    [numLabel setTextColor:[UIColor whiteColor]];
+    if (power < 3) {
+        [numLabel setTextColor:[UIColor darkGrayColor]];
+    }
     _power = power;
+    NSString *imageName;
+    if (power < 9) {
+        imageName = [NSString stringWithFormat:@"%ld",number];
+    }else{
+        imageName = @"256";
+    }
+    [self setImage:[UIImage imageNamed:imageName]];
 }
 
 - (void)setPosition:(Position)position{
@@ -76,22 +89,49 @@
         [self setFrame:[boundaryView frameAtRow:position.row column:position.column]];
     }completion:^(BOOL finished){
         if (finished) {
-//            [self addCombineAnimation];
+            
         }
     }];
     _position = position;
+}
+
+- (void)setPosition:(Position)position dealloc:(BOOL)dealloc{
+    if (position.row == _position.row && position.column == _position.column && dealloc) {
+        [UIView animateWithDuration:0.2 animations:^{
+            [self setAlpha:0.99];
+        }completion:^(BOOL finished){
+            if (finished) {
+                [self removeFromSuperview];
+            }
+        }];
+        _position = position;
+    }else{
+        [UIView animateWithDuration:0.2 animations:^{
+            [self setFrame:[boundaryView frameAtRow:position.row column:position.column]];
+        }completion:^(BOOL finished){
+            if (finished) {
+                if (dealloc) {
+                    [self removeFromSuperview];
+                }
+            }
+        }];
+        _position = position;
+    }
 }
 
 - (void)setPosition:(Position)position andPower:(NSInteger)power{
 //    if (position.row == _position.row && position.column == _position.column) {
 //        return;
 //    }
+    self.CombineEnable = YES;
     [UIView animateWithDuration:0.2 animations:^{
         [self setFrame:[boundaryView frameAtRow:position.row column:position.column]];
     }completion:^(BOOL finished){
         if (finished) {
-            [self setPower:power];
-            [self addCombineAnimation];
+            if (power != _power) {
+                [self setPower:power];
+                [self addCombineAnimation];
+            }
         }
     }];
     _position = position;

@@ -10,7 +10,6 @@
 #import "BoundaryView.h"
 
 @interface NumberItem : UIImageView
-
 @property (nonatomic, assign) NSInteger power;
 @property (nonatomic, assign) Position position;
 @property (nonatomic, assign) BOOL CombineEnable;
@@ -21,4 +20,6 @@
 
 - (void)addAppearAnimation;
 - (void)addCombineAnimation;
+
+//@property (nonatomic, weak) id<NumberItemDelegate> delegate;
 @end

@@ -11,6 +11,7 @@
 
 @interface ViewController (){
     GameViewController *gameViewController;
+    NSUInteger maxScore;
 }
 @property (weak, nonatomic) IBOutlet UIImageView *stepNumberImage;
 @property (weak, nonatomic) IBOutlet UILabel *stepNumberLabel;
@@ -37,8 +38,16 @@
     
     NSNumber *num = [[NSUserDefaults standardUserDefaults] objectForKey:@"maximumScore"];
     if (!num) {
-        self.maximumScoreLabel.text = [NSString stringWithFormat:@"%ld",(long)[num integerValue]];
+        maxScore = 0;
+        
+    }else{
+        maxScore = [num integerValue];
     }
+    self.maximumScoreLabel.text = [NSString stringWithFormat:@"%ld",(unsigned long)maxScore];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeStepNumber:) name:@"update_stepNumber" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCurrentScore:) name:@"update_currentScore" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gameEnd) name:@"gameEnd" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,6 +57,27 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+}
+
+- (void)changeStepNumber:(NSNotification *)notification{
+    NSDictionary *dic = [notification userInfo];
+    self.stepNumberLabel.text = [NSString stringWithFormat:@"%@",[dic objectForKey:@"stepNumber"]];
+}
+
+- (void)changeCurrentScore:(NSNotification *)notification{
+    NSDictionary *dic = [notification userInfo];
+    NSUInteger currentScore = [[dic objectForKey:@"score"] integerValue];
+    self.currentScoreLabel.text = [NSString stringWithFormat:@"%d",currentScore];
+    if (currentScore > maxScore) {
+        maxScore = currentScore;
+        self.maximumScoreLabel.text = [NSString stringWithFormat:@"%d",maxScore];
+        [[NSUserDefaults standardUserDefaults] setObject:@(maxScore) forKey:@"maximumScore"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
+
+- (void)gameEnd{
+    NSLog(@"游戏结束!");
 }
 
 @end

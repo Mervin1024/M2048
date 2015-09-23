@@ -18,6 +18,9 @@
     BOOL moveEnable;
     BOOL touchEnable;
     CGPoint touchPoint;
+    
+    NSUInteger currentScore;
+    NSUInteger stepNumber;
 }
 
 @end
@@ -28,6 +31,8 @@
     [super viewDidLoad];
     moveEnable = NO;
     touchEnable = YES;
+    currentScore = 0;
+    stepNumber = 0;
     items = [NSMutableDictionary dictionaryWithCapacity:16];
     positionsArray = [NSMutableArray arrayWithArray:@[@0,@0,@0,@0,  @0,@0,@0,@0,  @0,@0,@0,@0,  @0,@0,@0,@0 ]];
     CGFloat width = ([UIScreen mainScreen].bounds.size.width-52);
@@ -55,10 +60,13 @@
     NSInteger power = (arc4random() % 2)+1;
     NumberItem *item = [[NumberItem alloc] initWithBoundaryView:boundaryView position:p power:power animation:animation];
     [items setObject:item forKey:[NSString stringWithFormat:@"%ld",(long)index]];
+//    item.delegate = self;
     
     if ([self gameEnd]) {
-        NSLog(@"游戏结束");
-        touchEnable = NO;
+//        NSLog(@"游戏结束");
+//        touchEnable = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"gameEnd" object:nil userInfo:nil];
+        return;
     }
 }
 
@@ -68,33 +76,33 @@
         gameEnd = YES;
         for (int i = 0; i < positionsArray.count; i++) {
             NumberItem *item1 = [items objectForKey:[NSString stringWithFormat:@"%d",i]];
-//            NSLog(@"第%d个number:%ld",i,(long)item1.power);
+            NSLog(@"第%d个number:%ld",i,(long)item1.power);
             if (i+4 < positionsArray.count) {
                 NumberItem *item2 = [items objectForKey:[NSString stringWithFormat:@"%d",i+4]];
-//                NSLog(@"下面一个:%ld",item2.power);
+                NSLog(@"下面一个:%ld",(long)item2.power);
                 if (item1.power == item2.power) {
-//                    NSLog(@"相同");
+                    NSLog(@"相同");
                     gameEnd = NO;
                 }else{
-//                    NSLog(@"不同");
+                    NSLog(@"不同");
                 }
             }
             if (i+1 < positionsArray.count && (i+1)/4 == i/4) {
                 NumberItem *item2 = [items objectForKey:[NSString stringWithFormat:@"%d",i+1]];
-//                NSLog(@"右边一个:%ld",item2.power);
+                NSLog(@"右边一个:%ld",(long)item2.power);
                 if (item1.power == item2.power) {
-//                    NSLog(@"相同");
+                    NSLog(@"相同");
                     gameEnd = NO;
                 }else{
-//                    NSLog(@"不同");
+                    NSLog(@"不同");
                 }
             }
         }
-//        if (gameEnd) {
-//            NSLog(@"gameEnd:YES");
-//        }else{
-//            NSLog(@"gameEnd:NO");
-//        }
+        if (gameEnd) {
+            NSLog(@"gameEnd:YES");
+        }else{
+            NSLog(@"gameEnd:NO");
+        }
     }
     return gameEnd;
 }
@@ -148,10 +156,10 @@
                     continue;
                 }
                 NSMutableArray *newColumnItems = [NSMutableArray arrayWithCapacity:4];
-                NSInteger pow = 0;
+                NSInteger powe = 0;
                 for (int k = 0; k < columnItems.count; k++) {
                     NumberItem *item = columnItems[k];
-                    if (item.power != pow) {
+                    if (item.power != powe) {
                         
                     }else{
                         NumberItem *ite = columnItems[k-1];
@@ -165,7 +173,7 @@
                         }
                     }
                     [newColumnItems addObject:item];
-                    pow = item.power;
+                    powe = item.power;
                 }
 //                NSLog(@"合并后:%ld",newColumnItems.count);
                 for (int m = 0; m < 4; m++) {
@@ -179,6 +187,7 @@
                     p.column = i;
                     if (!item.CombineEnable) {
                         NSInteger power = item.power+1;
+                        currentScore += pow(2, power);
                         [item setPosition:p andPower:power];
                     }else{
                         [item setPosition:p];
@@ -217,10 +226,10 @@
                     continue;
                 }
                 NSMutableArray *newColumnItems = [NSMutableArray arrayWithCapacity:4];
-                NSInteger pow = 0;
+                NSInteger powe = 0;
                 for (int k = 0; k < columnItems.count; k++) {
                     NumberItem *item = columnItems[k];
-                    if (item.power != pow) {
+                    if (item.power != powe) {
                         
                     }else{
                         NumberItem *ite = columnItems[k-1];
@@ -234,7 +243,7 @@
                         }
                     }
                     [newColumnItems addObject:item];
-                    pow = item.power;
+                    powe = item.power;
                 }
                 //                NSLog(@"合并后:%ld",newColumnItems.count);
                 for (int m = 0; m < 4; m++) {
@@ -248,6 +257,7 @@
                     p.column = i;
                     if (!item.CombineEnable) {
                         NSInteger power = item.power+1;
+                        currentScore += pow(2, power);
                         [item setPosition:p andPower:power];
                     }else{
                         [item setPosition:p];
@@ -285,10 +295,10 @@
                     continue;
                 }
                 NSMutableArray *newColumnItems = [NSMutableArray arrayWithCapacity:4];
-                NSInteger pow = 0;
+                NSInteger powe = 0;
                 for (int k = 0; k < columnItems.count; k++) {
                     NumberItem *item = columnItems[k];
-                    if (item.power != pow) {
+                    if (item.power != powe) {
                         
                     }else{
                         NumberItem *ite = columnItems[k-1];
@@ -302,7 +312,7 @@
                         }
                     }
                     [newColumnItems addObject:item];
-                    pow = item.power;
+                    powe = item.power;
                 }
 //                NSLog(@"合并后:%ld",newColumnItems.count);
                 for (int m = 0; m < 4; m++) {
@@ -316,6 +326,7 @@
                     p.column = l;
                     if (!item.CombineEnable) {
                         NSInteger power = item.power+1;
+                        currentScore += pow(2, power);
                         [item setPosition:p andPower:power];
                     }else{
                         [item setPosition:p];
@@ -353,10 +364,10 @@
                     continue;
                 }
                 NSMutableArray *newColumnItems = [NSMutableArray arrayWithCapacity:4];
-                NSInteger pow = 0;
+                NSInteger powe = 0;
                 for (int k = 0; k < columnItems.count; k++) {
                     NumberItem *item = columnItems[k];
-                    if (item.power != pow) {
+                    if (item.power != powe) {
                         
                     }else{
                         NumberItem *ite = columnItems[k-1];
@@ -370,7 +381,7 @@
                         }
                     }
                     [newColumnItems addObject:item];
-                    pow = item.power;
+                    powe = item.power;
                 }
 //                NSLog(@"合并后:%ld",newColumnItems.count);
                 for (int m = 0; m < 4; m++) {
@@ -384,6 +395,7 @@
                     p.column = 3-l;
                     if (!item.CombineEnable) {
                         NSInteger power = item.power+1;
+                        currentScore += pow(2, power);
                         [item setPosition:p andPower:power];
                     }else{
                         [item setPosition:p];
@@ -404,6 +416,7 @@
     }
     if (moved) {
         [self addNewNumberItemWithAnimation:YES];
+        stepNumber++;
     }
 }
 
@@ -450,16 +463,24 @@
         
         moveEnable = NO;
         [self moveWithMovingDirection:movingDirection];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"update_currentScore" object:nil userInfo:@{@"score":@(currentScore)}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"update_stepNumber" object:nil userInfo:@{@"stepNumber":@(stepNumber)}];
     }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     [super touchesEnded:touches withEvent:event];
     moveEnable = NO;
+    
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
     [super touchesCancelled:touches withEvent:event];
     moveEnable = NO;
 }
+//#pragma mark - NumberItem Delegate
+//- (void)numberItem:(NumberItem *)numberItem didScore:(NSInteger)score{
+//    currentScore += score;
+//}
+
 @end

@@ -7,7 +7,6 @@
 //
 
 #import "GameViewController.h"
-#import "BoundaryView.h"
 #import "NumberItem.h"
 #import "NSArray+MEROperation.h"
 
@@ -29,24 +28,37 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    CGFloat width = (SCREEN_WIDTH-52);
+    [self.view setFrame:CGRectMake(26, SCREEN_HEIGHT-100-width, width, width)];
+    boundaryView = [[BoundaryView alloc] initWithFrame:CGRectMake(0, 0, width, width)];
+    [self.view addSubview:boundaryView];
+    [self initGame];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    
+}
+
+- (void)initGame{
     moveEnable = NO;
     touchEnable = YES;
     currentScore = 0;
     stepNumber = 0;
     items = [NSMutableDictionary dictionaryWithCapacity:16];
     positionsArray = [NSMutableArray arrayWithArray:@[@0,@0,@0,@0,  @0,@0,@0,@0,  @0,@0,@0,@0,  @0,@0,@0,@0 ]];
-    CGFloat width = ([UIScreen mainScreen].bounds.size.width-52);
-    [self.view setFrame:CGRectMake(26, [UIScreen mainScreen].bounds.size.height-100-width, width, width)];
-    boundaryView = [[BoundaryView alloc] initWithFrame:CGRectMake(0, 0, width, width)];
-    [self.view addSubview:boundaryView];
+    
     
     [self addNewNumberItemWithAnimation:NO];
     [self addNewNumberItemWithAnimation:NO];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    
+- (void)reStart{
+    for (NSString *key in [items allKeys]) {
+        NumberItem *item = [items objectForKey:key];
+        [item removeFromSuperview];
+    }
+    [self initGame];
 }
 
 - (void)addNewNumberItemWithAnimation:(BOOL)animation{
@@ -81,32 +93,32 @@
         gameEnd = YES;
         for (int i = 0; i < positionsArray.count; i++) {
             NumberItem *item1 = [items objectForKey:[NSString stringWithFormat:@"%d",i]];
-            NSLog(@"第%d个number:%ld",i,(long)item1.power);
+//            NSLog(@"第%d个number:%ld",i,(long)item1.power);
             if (i+4 < positionsArray.count) {
                 NumberItem *item2 = [items objectForKey:[NSString stringWithFormat:@"%d",i+4]];
-                NSLog(@"下面一个:%ld",(long)item2.power);
+//                NSLog(@"下面一个:%ld",(long)item2.power);
                 if (item1.power == item2.power) {
-                    NSLog(@"相同");
+//                    NSLog(@"相同");
                     gameEnd = NO;
                 }else{
-                    NSLog(@"不同");
+//                    NSLog(@"不同");
                 }
             }
             if (i+1 < positionsArray.count && (i+1)/4 == i/4) {
                 NumberItem *item2 = [items objectForKey:[NSString stringWithFormat:@"%d",i+1]];
-                NSLog(@"右边一个:%ld",(long)item2.power);
+//                NSLog(@"右边一个:%ld",(long)item2.power);
                 if (item1.power == item2.power) {
-                    NSLog(@"相同");
+//                    NSLog(@"相同");
                     gameEnd = NO;
                 }else{
-                    NSLog(@"不同");
+//                    NSLog(@"不同");
                 }
             }
         }
         if (gameEnd) {
-            NSLog(@"gameEnd:YES");
+//            NSLog(@"gameEnd:YES");
         }else{
-            NSLog(@"gameEnd:NO");
+//            NSLog(@"gameEnd:NO");
         }
     }
     return gameEnd;

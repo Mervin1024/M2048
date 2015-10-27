@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BoundaryView.h"
 
 typedef NS_ENUM(NSInteger, MovingDirection) {
     MovingDirectionUp,
@@ -16,5 +17,5 @@ typedef NS_ENUM(NSInteger, MovingDirection) {
 };
 
 @interface GameViewController : UIViewController
-
+- (void)reStart;
 @end

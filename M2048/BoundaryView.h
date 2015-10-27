@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#define SCREEN_SIZE ([UIScreen mainScreen].bounds.size)
+#define SCREEN_BOUNDS ([UIScreen mainScreen].bounds)
+#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
+#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
 //typedef struct {
 //    CGRect x0y0;   // 第一行
 //    CGRect x0y1;

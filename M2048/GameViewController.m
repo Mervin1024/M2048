@@ -8,7 +8,6 @@
 
 #import "GameViewController.h"
 #import "NumberItem.h"
-#import "NSArray+MEROperation.h"
 
 @interface GameViewController () {
     BoundaryView *boundaryView;

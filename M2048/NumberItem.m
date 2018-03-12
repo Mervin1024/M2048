@@ -18,6 +18,10 @@
 
 @implementation NumberItem
 
+- (void)dealloc {
+    NSLog(@"NumberItem 正常释放");
+}
+
 - (instancetype)initWithBoundaryView:(BoundaryView *)view position:(Position)position power:(NSInteger)power animation:(BOOL)animation{
     CGRect frame = [view frameAtRow:position.row column:position.column];
     self = [super initWithFrame:frame];
